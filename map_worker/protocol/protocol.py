@@ -4,12 +4,10 @@ import random
 import time
 
 class Protocol:
-    def __init__(self, callback):
+    def __init__(self):
         self.connection = pika.BlockingConnection(
                 pika.ConnectionParameters(host='rabbitmq')
             )
-
-        self.callback = callback
 
         self.channel = self.connection.channel()
 
@@ -22,13 +20,17 @@ class Protocol:
         self.channel.queue_bind(exchange='map_city', queue=queue_name)
 
         self.channel.basic_qos(prefetch_count=1)
+
         self.channel.basic_consume(
-            queue=queue_name, on_message_callback=self.data_read, auto_ack=True)
-    
-    def start_connection(self):
+            queue=queue_name, on_message_callback=self.data_read, auto_ack=True
+        )    
+
+    def start_connection(self, callback):
+        self.callback = callback
+
         self.channel.start_consuming()
 
     def data_read(self, ch, method, properties, body):
         [date, latitude, longitude, result] = body.decode("utf-8").split(",")
         
-        self.callback(date, latitude, longitude, result)
+        self.callback(date, float(latitude), float(longitude), result)

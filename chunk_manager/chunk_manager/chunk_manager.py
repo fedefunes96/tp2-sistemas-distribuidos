@@ -7,7 +7,6 @@ class ChunkManager:
         self.protocol = protocol
 
     def process_data(self, route):
-        print("Route {}".format(route))
         with open(route) as csv_file:
             csv_reader = csv.reader(csv_file, delimiter=',')
             line_count = 0

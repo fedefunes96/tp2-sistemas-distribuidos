@@ -10,7 +10,7 @@ from configparser import ConfigParser, NoSectionError, NoOptionError
 import os.path
 
 CONFIG_FILE = 'config/config.ini'
-DATA_FILE = 'data/data.csv'
+PLACES_FILE = 'data/places.csv'
 
 def parse_config_params():
     if os.path.isfile(CONFIG_FILE):
@@ -44,12 +44,12 @@ def read_from_env():
 
 def main():
     config_params = parse_config_params()
-    
+
     time.sleep(10)
 
     worker = Worker()
 
-    worker.start()
+    worker.start(PLACES_FILE)
 
 if __name__== "__main__":
     main()
