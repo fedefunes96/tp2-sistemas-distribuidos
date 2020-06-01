@@ -1,0 +1,37 @@
+version: '3'
+services:
+  rabbitmq:
+    container_name: rabbitmq
+    image: rabbitmq:latest
+    ports:
+      - 15672:15672
+  
+  chunk_manager:
+    container_name: chunk_manager
+    image: chunk_manager:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - SERVER_IP=server
+      - SERVER_PORT=12345
+      - SERVER_LISTEN_BACKLOG=5
+    volumes:
+      - ./chunk_manager/data:/data
+
+  map_worker1:  
+    container_name: map_worker
+    image: map_worker:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CONSUMER_ID=1
