@@ -3,34 +3,23 @@ import sys
 import random
 import time
 
+from middleware.receiver import Receiver
+from middleware.sender import Sender
+
 class Protocol:
     def __init__(self):
-        self.connection = pika.BlockingConnection(
-                pika.ConnectionParameters(host='rabbitmq')
-            )
-
-        self.channel = self.connection.channel()
-
-        self.channel.exchange_declare(exchange='map_city', exchange_type='fanout')
-
-        result = self.channel.queue_declare(queue='', durable=True)
-
-        queue_name = result.method.queue
-
-        self.channel.queue_bind(exchange='map_city', queue=queue_name)
-
-        self.channel.basic_qos(prefetch_count=1)
-
-        self.channel.basic_consume(
-            queue=queue_name, on_message_callback=self.data_read, auto_ack=True
-        )    
+        self.receiver = Receiver()
+        self.sender = Sender()
 
     def start_connection(self, callback):
         self.callback = callback
+        self.receiver.receive_from_topic("map_city", self.data_read)
+    
+    def send_located_data(self, date, place, result):
+        message = date + ',' + place + ',' + result
+        self.sender.send_to_topic("resume_city", message)
 
-        self.channel.start_consuming()
-
-    def data_read(self, ch, method, properties, body):
-        [date, latitude, longitude, result] = body.decode("utf-8").split(",")
+    def data_read(self, msg):
+        [date, latitude, longitude, result] = msg.split(",")
         
         self.callback(date, float(latitude), float(longitude), result)

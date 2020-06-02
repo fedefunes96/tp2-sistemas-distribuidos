@@ -28,4 +28,5 @@ class Worker:
 
         closest_place = point.closest_point(self.places).name
 
-        print("Closest place is: {}".format(closest_place))
+        self.protocol.send_located_data(date, closest_place, result)
+        #print("Closest place is: {}".format(closest_place))

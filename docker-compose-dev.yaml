@@ -37,3 +37,16 @@ services:
       - CONSUMER_ID=1
     volumes:
       - ./map_worker/data:/data
+
+  cities_resume1:  
+    container_name: cities_resume
+    image: cities_resume:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CONSUMER_ID=1
