@@ -13,9 +13,12 @@ class Protocol:
         self.callback = callback
         self.receiver.receive_from_topic("resume_city", self.data_read)
 
-    def data_read(self, msg):
-        [date, place, result] = msg.split(",")
-        
-        #print(place)
+    def data_read(self, method, msg_type, msg):
+        if msg_type == "EOF":
+            print("Received eoF")
+        else:
+            [date, place, result] = msg.split(",")
+            
+            #print(place)
 
-        self.callback(date, place, result)
+            self.callback(date, place, result)

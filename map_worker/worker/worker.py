@@ -21,7 +21,7 @@ class Worker:
                     self.places.append(point)
                     line_count += 1
 
-        self.protocol.start_connection(self.data_read)
+        self.protocol.start_connection(self.data_read, self.eof_read)
 
     def data_read(self, date, latitude, longitude, result):
         point = Point(longitude, latitude)
@@ -29,4 +29,6 @@ class Worker:
         closest_place = point.closest_point(self.places).name
 
         self.protocol.send_located_data(date, closest_place, result)
-        #print("Closest place is: {}".format(closest_place))
+    
+    def eof_read(self):
+        self.protocol.send_ended()

@@ -7,6 +7,7 @@ docker-image:
 	docker build -f ./python_base_image/Dockerfile -t rabbitmq-python-base:0.0.1 .
 	docker build -f ./rabbitmq/Dockerfile -t "rabbitmq:latest" .
 	docker build -f ./chunk_manager/Dockerfile -t "chunk_manager:latest" .
+	docker build -f ./master_controller/Dockerfile -t "master_controller:latest" .
 	docker build -f ./map_worker/Dockerfile -t "map_worker:latest" .
 	docker build -f ./cities_resume/Dockerfile -t "cities_resume:latest" .
 .PHONY: docker-image

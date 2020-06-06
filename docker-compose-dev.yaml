@@ -23,6 +23,19 @@ services:
     volumes:
       - ./chunk_manager/data:/data
 
+  master_controller:
+    container_name: master_controller
+    image: master_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - CONSUMER_ID=1    
+
   map_worker1:  
     container_name: map_worker
     image: map_worker:latest
