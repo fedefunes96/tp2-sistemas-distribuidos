@@ -10,12 +10,11 @@ class Worker:
 
         self.process_results()
 
-    def data_read(self, date, place, result):
-        if result == 'positivi':
-            if place not in self.positives_per_city:
-                self.positives_per_city[place] = 0
+    def data_read(self, place):
+        if place not in self.positives_per_city:
+            self.positives_per_city[place] = 0
             
-            self.positives_per_city[place] += 1
+        self.positives_per_city[place] += 1
     
     def process_results(self):
         for place in self.positives_per_city:

@@ -1,11 +1,16 @@
 import csv
-from protocol.protocol import Protocol
+from map_controller.map_controller import MapController
 from named_point.named_point import NamedPoint
 from point.point import Point
 
 class Worker:
     def __init__(self):
-        self.protocol = Protocol()
+        self.map_controller = MapController(
+            "map_city",
+            "cities_resume",
+            "master_map",
+            self.process_data
+        )
         self.places = []
 
     def start(self, route):
@@ -21,14 +26,9 @@ class Worker:
                     self.places.append(point)
                     line_count += 1
 
-        self.protocol.start_connection(self.data_read, self.eof_read)
+        self.map_controller.start()
 
-    def data_read(self, date, latitude, longitude, result):
+    def process_data(self, latitude, longitude):
         point = Point(longitude, latitude)
 
-        closest_place = point.closest_point(self.places).name
-
-        self.protocol.send_located_data(date, closest_place, result)
-    
-    def eof_read(self):
-        self.protocol.send_ended()
+        return point.closest_point(self.places).name        

@@ -36,8 +36,7 @@ class Protocol:
             print("Received eoF")
             self.receiver.close()
         else:
-            [date, place, result] = msg.split(",")
-            
+            #[date, place, result] = msg.split(",")
             #print(place)
 
-            self.callback(date, place, result)
+            self.callback(msg)
