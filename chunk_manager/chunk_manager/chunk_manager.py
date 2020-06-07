@@ -1,10 +1,11 @@
 import csv
+from protocol.protocol import Protocol
 
 CHUNK_SIZE = 64
 
 class ChunkManager:
-    def __init__(self, protocol):
-        self.protocol = protocol
+    def __init__(self, send_queue):
+        self.protocol = Protocol(send_queue)
 
     def process_data(self, route):
         with open(route) as csv_file:

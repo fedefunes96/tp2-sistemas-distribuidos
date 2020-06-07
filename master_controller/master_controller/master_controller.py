@@ -1,16 +1,11 @@
 from protocol.protocol import Protocol
 
 class MasterController:
-    def __init__(self):
-        self.protocol = Protocol()
+    def __init__(self, recv_queue, send_queue, total_workers):
+        self.protocol = Protocol(recv_queue, send_queue, total_workers)
 
     def start(self):
         self.protocol.start_connection(self.data_read)
-        #print("Is this ever called?")
-        #self.protocol.send_eof()
 
     def data_read(self, data):
        self.protocol.send_data(data)
-
-    #def eof_read(self):
-    #    self.protocol.send_eof()

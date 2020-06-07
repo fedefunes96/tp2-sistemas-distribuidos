@@ -17,9 +17,7 @@ services:
       - rabbitmq
     environment:
       - PYTHONUNBUFFERED=1
-      - SERVER_IP=server
-      - SERVER_PORT=12345
-      - SERVER_LISTEN_BACKLOG=5
+      - SEND_QUEUE=chunks
     volumes:
       - ./chunk_manager/data:/data
 
@@ -34,7 +32,9 @@ services:
       - rabbitmq
     environment:
       - PYTHONUNBUFFERED=1
-      - CONSUMER_ID=1    
+      - RECV_QUEUE=chunks
+      - SEND_QUEUE=map_city
+      - TOTAL_MAP_WORKERS=1
 
   map_worker1:  
     container_name: map_worker
@@ -103,3 +103,16 @@ services:
       - rabbitmq
     environment:
       - PYTHONUNBUFFERED=1
+
+  summary_controller:  
+    container_name: summary_controller
+    image: summary_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=summary_resume

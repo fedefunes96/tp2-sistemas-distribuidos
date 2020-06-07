@@ -1,21 +1,22 @@
 from middleware.connection import Connection
+import json
 
-NORMAL = "NORMAL"
+TOP_CITIES = "TOP_CITIES"
 EOF = "EOF"
 
 class Protocol:
-    def __init__(self, recv_queue, send_queue):
+    def __init__(self, recv_queue):
         self.connection = Connection()
 
         self.receiver = self.connection.create_direct_receiver(recv_queue)
-        self.sender = self.connection.create_direct_sender(send_queue)
 
-    def start_connection(self):
+    def start_connection(self, callback_top):
+        self.callback_top = callback_top
         self.receiver.start_receiving(self.data_read)
 
     def data_read(self, msg_type, msg):
-        if msg_type == "EOF":
-            self.receiver.close()
-            print("Sending EOF to map workers")
-            self.sender.send(EOF, '')
+        if msg_type == EOF:
+            #Count and then close connection
             self.connection.close()
+        elif msg_type == TOP_CITIES:
+            self.callback_top(json.loads(msg))

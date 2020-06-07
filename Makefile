@@ -12,6 +12,7 @@ docker-image:
 	docker build -f ./resume_master_controller/Dockerfile -t "resume_master_controller:latest" .
 	docker build -f ./top_cities_controller/Dockerfile -t "top_cities_controller:latest" .
 	docker build -f ./cities_resume/Dockerfile -t "cities_resume:latest" .
+	docker build -f ./summary_controller/Dockerfile -t "summary_controller:latest" .
 .PHONY: docker-image
 
 docker-compose-up: docker-image
