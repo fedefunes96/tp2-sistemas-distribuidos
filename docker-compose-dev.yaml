@@ -63,3 +63,43 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - CONSUMER_ID=1
+
+  resume_master_controller:  
+    container_name: resume_master_controller
+    image: resume_master_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=master_map
+      - SEND_QUEUE=cities_resume
+
+  resume_master_controller2:  
+    container_name: resume_master_controller2
+    image: resume_master_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=resume_master
+      - SEND_QUEUE=top_cities
+
+  top_cities_controller:  
+    container_name: top_cities_controller
+    image: top_cities_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1

@@ -44,7 +44,7 @@ def read_from_env():
 def main():
     config_params = parse_config_params()
 
-    time.sleep(10)
+    time.sleep(15)
 
     master_controller = MasterController()
 

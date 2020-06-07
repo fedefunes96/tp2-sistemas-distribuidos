@@ -30,3 +30,6 @@ class TopicReceiver:
     
     def data_received(self, ch, method, properties, body):
         self.callback(properties.type, body.decode('utf-8'))
+
+    def close(self):
+        self.channel.close()

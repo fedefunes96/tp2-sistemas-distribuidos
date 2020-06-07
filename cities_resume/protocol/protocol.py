@@ -3,19 +3,38 @@ import sys
 import random
 import time
 
-from middleware.receiver import Receiver
+#from middleware.receiver import Receiver
+from middleware.connection import Connection
+
+NORMAL = "NORMAL"
+EOF = "EOF"
 
 class Protocol:
     def __init__(self):
-        self.receiver = Receiver()
+        self.connection = Connection()
+        self.receiver = self.connection.create_direct_receiver("cities_resume")
+        #self.receiver = Receiver()
 
     def start_connection(self, callback):
         self.callback = callback
-        self.receiver.receive_from_topic("resume_city", self.data_read)
+        self.receiver.start_receiving(self.data_read)
+        #self.receiver.receive_from_topic("resume_city", self.data_read)
 
-    def data_read(self, method, msg_type, msg):
-        if msg_type == "EOF":
+    def send_data(self, place, cases):
+        self.sender = self.connection.create_direct_sender("top_cities")
+
+        msg = place + "," + str(cases)
+
+        self.sender.send(NORMAL, msg)
+
+        self.sender = self.connection.create_direct_sender("resume_master")
+
+        self.sender.send(EOF, "")
+
+    def data_read(self, msg_type, msg):
+        if msg_type == EOF:
             print("Received eoF")
+            self.receiver.close()
         else:
             [date, place, result] = msg.split(",")
             

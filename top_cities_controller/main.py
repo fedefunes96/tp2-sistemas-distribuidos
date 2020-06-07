@@ -4,13 +4,12 @@ import os
 import sys
 import time
 import logging
-from worker.worker import Worker
+from top_cities_controller.top_cities_controller import TopCitiesController
 
 from configparser import ConfigParser, NoSectionError, NoOptionError
 import os.path
 
 CONFIG_FILE = 'config/config.ini'
-PLACES_FILE = 'data/places.csv'
 
 def parse_config_params():
     if os.path.isfile(CONFIG_FILE):
@@ -47,9 +46,9 @@ def main():
 
     time.sleep(15)
 
-    worker = Worker()
+    worker = TopCitiesController()
 
-    worker.start(PLACES_FILE)
+    worker.start()
 
 if __name__== "__main__":
     main()

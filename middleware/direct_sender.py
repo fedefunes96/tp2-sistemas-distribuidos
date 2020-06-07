@@ -15,7 +15,8 @@ class DirectSender:
             exchange='',
             routing_key=self.where,
             properties=pika.BasicProperties(
+                delivery_mode=2,
                 type=msg_type
-            )
+            ),
             body=msg
         )

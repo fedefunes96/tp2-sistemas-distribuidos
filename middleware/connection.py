@@ -29,7 +29,7 @@ class Connection:
     def create_distributed_work_sender(self, where):
         channel = self.connection.channel()
 
-        return DistributedWorkSender(channel, from_where)   
+        return DistributedWorkSender(channel, where)   
 
     def create_distributed_work_receiver(self, from_where):
         channel = self.connection.channel()

@@ -23,3 +23,9 @@ class DistributedWorkReceiver:
     
     def data_received(self, ch, method, properties, body):
         self.callback(method, properties.type, body.decode('utf-8'))
+
+    def send_ack(self, method):
+        self.channel.basic_ack(delivery_tag = method.delivery_tag)
+
+    def close(self):
+        self.channel.close()
