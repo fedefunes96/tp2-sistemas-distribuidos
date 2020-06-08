@@ -37,4 +37,5 @@ class Worker:
     
     def process_results(self):
         #self.protocol.send_data(self.positives_per_date, self.deceased_per_date)
+        print("DATES RESUME: Sending results")
         self.protocol.send_data(self.results_per_date)

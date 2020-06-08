@@ -43,7 +43,7 @@ def read_from_env():
 def main():
     config_params = parse_config_params()
 
-    time.sleep(15)
+    #time.sleep(15)
 
     master_controller = SummaryController(
         config_params["receive_queue"],

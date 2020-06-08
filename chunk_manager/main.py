@@ -46,7 +46,7 @@ def read_from_env():
 def main():
     config_params = parse_config_params()
     
-    time.sleep(15)
+    #time.sleep(15)
 
     chunk_manager = ChunkManager(
         config_params["queue_map"],

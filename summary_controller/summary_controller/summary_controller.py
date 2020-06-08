@@ -22,7 +22,7 @@ class SummaryController:
         print(date_data)
         self.date_data = date_data
 
-    def count_read(self, percentage)
+    def count_read(self, percentage):
         print(percentage)
         self.percentage = percentage * 100
     

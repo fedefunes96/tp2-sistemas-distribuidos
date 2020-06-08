@@ -45,7 +45,7 @@ def read_from_env():
 def main():
     config_params = parse_config_params()
 
-    time.sleep(15)
+    #time.sleep(15)
 
     worker = Worker(
         config_params["recv_queue"],

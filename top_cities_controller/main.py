@@ -44,7 +44,7 @@ def read_from_env():
 def main():
     config_params = parse_config_params()
 
-    time.sleep(15)
+    #time.sleep(15)
 
     worker = TopCitiesController(
         config_params["recv_queue"],

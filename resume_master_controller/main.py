@@ -34,6 +34,7 @@ def read_from_env():
     try:
         config_params["receive_queue"] = os.environ["RECV_QUEUE"]
         config_params["send_queue"] = os.environ["SEND_QUEUE"]
+        config_params["total_workers"] = int(os.environ["TOTAL_WORKERS"])
     except KeyError as e:
         raise KeyError("Key was not found. Error: {}. Aborting server".format(e))
     except ValueError as e:
@@ -44,11 +45,12 @@ def read_from_env():
 def main():
     config_params = parse_config_params()
 
-    time.sleep(15)
+    #time.sleep(15)
 
     master_controller = ResumeMasterController(
         config_params["receive_queue"],
-        config_params["send_queue"]
+        config_params["send_queue"],
+        config_params["total_workers"]
     )
 
     master_controller.start()

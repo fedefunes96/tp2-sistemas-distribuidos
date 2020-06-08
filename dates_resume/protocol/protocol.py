@@ -26,8 +26,9 @@ class Protocol:
         self.master_sender.send(EOF, "")
 
     def data_read(self, msg_type, msg):
+        print("Incoming: {}".format(msg))
         if msg_type == EOF:
-            print("Received eoF")
+            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA END OF FILE")
             self.receiver.close()
         else:
             [date, result] = msg.split(',')

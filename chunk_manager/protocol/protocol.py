@@ -26,6 +26,7 @@ class Protocol:
 
     def close(self):
         print("Sending EOF")
-        self.sender.send(EOF, "")
+        self.sender_map.send(EOF, "")
         self.sender_date.send(EOF, "")
+        self.sender_count.send(EOF, "")
         self.connection.close()

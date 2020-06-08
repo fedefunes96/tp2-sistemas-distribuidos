@@ -22,6 +22,7 @@ class Protocol:
     
     def send_data(self, total_positivi, total_deceduti):
         msg = str(total_positivi) + "," + str(total_deceduti)
+        print("Sending {}".format(msg))
         self.sender.send(NORMAL, msg)
         self.master_sender.send(EOF, "")
         self.connection.close()
@@ -31,6 +32,7 @@ class Protocol:
             print("RECEIVED EOF WORKER!!!!!!!!!!!!!!!!!!!")
             self.receiver.send_ack(method)
             self.receiver.close()
-        else:            
-            self.callback(msg)
+        else:       
+            [date, latitude, longitude, result] = msg.split(",")     
+            self.callback(result)
             self.receiver.send_ack(method)

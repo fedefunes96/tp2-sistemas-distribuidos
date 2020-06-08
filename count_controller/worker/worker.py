@@ -15,7 +15,7 @@ class Worker:
     def start(self):
         self.protocol.start_connection(self.data_received)
 
-        self.send_data(self.total_positivi, self.total_deceduti)
+        self.protocol.send_data(self.total_positivi, self.total_deceduti)
     
     def data_received(self, result):
         if result == "positivi":

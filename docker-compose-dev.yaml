@@ -82,6 +82,7 @@ services:
       - PYTHONUNBUFFERED=1
       - RECV_QUEUE=master_map
       - SEND_QUEUE=cities_resume
+      - TOTAL_WORKERS=${TOTAL_MAP_WORKERS}
 
   resume_master_controller2:  
     container_name: resume_master_controller2
@@ -96,6 +97,7 @@ services:
       - PYTHONUNBUFFERED=1
       - RECV_QUEUE=resume_master
       - SEND_QUEUE=top_cities
+      - TOTAL_WORKERS=1
 
   top_cities_controller:  
     container_name: top_cities_controller
@@ -168,6 +170,7 @@ services:
       - PYTHONUNBUFFERED=1
       - RECV_QUEUE=master_date
       - SEND_QUEUE=dates_resume
+      - TOTAL_WORKERS=${TOTAL_DATE_WORKERS}
 
   dates_resume1:  
     container_name: dates_resume1
@@ -197,6 +200,7 @@ services:
       - PYTHONUNBUFFERED=1
       - RECV_QUEUE=resume_date_master
       - SEND_QUEUE=date_sorter
+      - TOTAL_WORKERS=1
 
   date_sorter:  
     container_name: date_sorter
@@ -241,8 +245,8 @@ services:
       - SEND_QUEUE=count_summary
       - MASTER_SEND_QUEUE=master_count
 
-  resume_date_master_controller:  
-    container_name: resume_date_master_controller
+  resume_count_master_controller:  
+    container_name: resume_count_master_controller
     image: resume_master_controller:latest
     entrypoint: python3 /main.py
     restart: on-failure
@@ -254,6 +258,7 @@ services:
       - PYTHONUNBUFFERED=1
       - RECV_QUEUE=master_count
       - SEND_QUEUE=count_summary
+      - TOTAL_WORKERS=${TOTAL_COUNT_WORKERS}
 
   count_summary_controller:  
     container_name: count_summary_controller
