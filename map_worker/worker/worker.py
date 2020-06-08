@@ -4,11 +4,11 @@ from named_point.named_point import NamedPoint
 from point.point import Point
 
 class Worker:
-    def __init__(self):
+    def __init__(self, recv_queue, send_queue, master_queue):
         self.map_controller = MapController(
-            "map_city",
-            "cities_resume",
-            "master_map",
+            recv_queue,
+            send_queue,
+            master_queue,
             self.process_data
         )
         self.places = []

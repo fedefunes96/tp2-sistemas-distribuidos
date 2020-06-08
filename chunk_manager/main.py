@@ -33,7 +33,9 @@ def read_from_env():
     config_params = {}
 
     try:
-        config_params["send_queue"] = os.environ["SEND_QUEUE"]
+        config_params["queue_map"] = os.environ["QUEUE_MAP"]
+        config_params["queue_date"] = os.environ["QUEUE_DATE"]
+        config_params["queue_count"] = os.environ["QUEUE_COUNT"]
     except KeyError as e:
         raise KeyError("Key was not found. Error: {}. Aborting server".format(e))
     except ValueError as e:
@@ -47,7 +49,9 @@ def main():
     time.sleep(15)
 
     chunk_manager = ChunkManager(
-        config_params["send_queue"]
+        config_params["queue_map"],
+        config_params["queue_date"],
+        config_params["queue_count"]
     )
 
     chunk_manager.process_data(DATA_FILE)

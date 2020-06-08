@@ -21,10 +21,8 @@ class Protocol:
         self.receiver.start_receiving(self.data_read)
 
     def send_data(self, data):
-        #msg = place + "," + str(cases)
-
         self.sender.send(NORMAL, json.dumps(data))
-
+        
         self.master_sender.send(EOF, "")
 
     def data_read(self, msg_type, msg):
@@ -32,4 +30,5 @@ class Protocol:
             print("Received eoF")
             self.receiver.close()
         else:
-            self.callback(msg)
+            [date, result] = msg.split(',')
+            self.callback(date, result)

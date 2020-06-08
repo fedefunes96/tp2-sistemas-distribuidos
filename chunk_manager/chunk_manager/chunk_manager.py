@@ -4,8 +4,8 @@ from protocol.protocol import Protocol
 CHUNK_SIZE = 64
 
 class ChunkManager:
-    def __init__(self, send_queue):
-        self.protocol = Protocol(send_queue)
+    def __init__(self, queue_map, queue_date, queue_count):
+        self.protocol = Protocol(queue_map, queue_date, queue_count)
 
     def process_data(self, route):
         with open(route) as csv_file:
@@ -15,7 +15,6 @@ class ChunkManager:
                 if line_count == 0:
                     line_count += 1
                     continue
-                    #print(f'Column names are {", ".join(row)}')
                 else:
                     date = row[0]
                     latitude = row[1]

@@ -1,8 +1,12 @@
 from protocol.protocol import Protocol
 
 class Worker:
-    def __init__(self):
-        self.protocol = Protocol()
+    def __init__(self, recv_queue, send_queue, master_queue):
+        self.protocol = Protocol(
+            recv_queue,
+            send_queue,
+            master_queue
+        )
         self.positives_per_city = {}
 
     def start(self):
@@ -19,5 +23,6 @@ class Worker:
     def process_results(self):
         print("Counted")
         print(self.positives_per_city)
-        for place in self.positives_per_city:
-            self.protocol.send_data(place, self.positives_per_city[place])
+        self.protocol.send_data(self.positives_per_city)
+        #for place in self.positives_per_city:
+        #    self.protocol.send_data(place, self.positives_per_city[place])

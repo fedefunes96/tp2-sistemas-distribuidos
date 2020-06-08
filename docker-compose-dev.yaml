@@ -17,12 +17,14 @@ services:
       - rabbitmq
     environment:
       - PYTHONUNBUFFERED=1
-      - SEND_QUEUE=chunks
+      - QUEUE_MAP=chunks_map
+      - QUEUE_COUNT=chunks_count
+      - QUEUE_DATE=chunks_date
     volumes:
       - ./chunk_manager/data:/data
 
-  master_controller:
-    container_name: master_controller
+  map_master_controller:
+    container_name: map_master_controller
     image: master_controller:latest
     entrypoint: python3 /main.py
     restart: on-failure
@@ -32,12 +34,11 @@ services:
       - rabbitmq
     environment:
       - PYTHONUNBUFFERED=1
-      - RECV_QUEUE=chunks
+      - RECV_QUEUE=chunks_map
       - SEND_QUEUE=map_city
-      - TOTAL_MAP_WORKERS=${TOTAL_MAP_WORKERS}
+      - TOTAL_WORKERS=${TOTAL_MAP_WORKERS}
 
   map_worker:  
-    #container_name: map_worker
     image: map_worker:latest
     entrypoint: python3 /main.py
     restart: on-failure
@@ -47,11 +48,14 @@ services:
       - rabbitmq
     environment:
       - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=map_city
+      - SEND_QUEUE=cities_resume
+      - MASTER_SEND_QUEUE=master_map
     volumes:
       - ./map_worker/data:/data
 
   cities_resume1:  
-    container_name: cities_resume
+    container_name: cities_resume1
     image: cities_resume:latest
     entrypoint: python3 /main.py
     restart: on-failure
@@ -61,7 +65,9 @@ services:
       - rabbitmq
     environment:
       - PYTHONUNBUFFERED=1
-      - CONSUMER_ID=1
+      - RECV_QUEUE=cities_resume
+      - SEND_QUEUE=top_cities
+      - MASTER_SEND_QUEUE=resume_master
 
   resume_master_controller:  
     container_name: resume_master_controller
@@ -102,6 +108,8 @@ services:
       - rabbitmq
     environment:
       - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=top_cities
+      - SEND_QUEUE=summary_resume
 
   summary_controller:  
     container_name: summary_controller
@@ -117,3 +125,146 @@ services:
       - RECV_QUEUE=summary_resume
     volumes:
       - ./summary_controller/summary:/summary
+
+  date_redirector_master_controller:
+    container_name: date_redirector_master_controller
+    image: master_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=chunks_date
+      - SEND_QUEUE=date_redirector_worker
+      - TOTAL_WORKERS=${TOTAL_DATE_WORKERS}
+
+  date_redirector_worker:  
+    image: date_redirector_worker:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=date_redirector_worker
+      - SEND_QUEUE=dates_resume
+      - MASTER_SEND_QUEUE=master_date
+
+  resume_date_master_controller:  
+    container_name: resume_date_master_controller
+    image: resume_master_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=master_date
+      - SEND_QUEUE=dates_resume
+
+  dates_resume1:  
+    container_name: dates_resume1
+    image: dates_resume:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=dates_resume
+      - SEND_QUEUE=date_sorter
+      - MASTER_SEND_QUEUE=resume_date_master
+
+  resume_date_master_controller2:  
+    container_name: resume_date_master_controller2
+    image: resume_master_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=resume_date_master
+      - SEND_QUEUE=date_sorter
+
+  date_sorter:  
+    container_name: date_sorter
+    image: date_sorter:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=date_sorter
+      - SEND_QUEUE=summary_resume
+
+  count_master_controller:
+    container_name: count_master_controller
+    image: master_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=chunks_count
+      - SEND_QUEUE=count_controller_worker
+      - TOTAL_WORKERS=${TOTAL_COUNT_WORKERS}
+
+  count_controller_worker:  
+    image: count_controller_worker:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=count_controller_worker
+      - SEND_QUEUE=count_summary
+      - MASTER_SEND_QUEUE=master_count
+
+  resume_date_master_controller:  
+    container_name: resume_date_master_controller
+    image: resume_master_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=master_count
+      - SEND_QUEUE=count_summary
+
+  count_summary_controller:  
+    container_name: count_summary_controller
+    image: count_summary_controller:latest
+    entrypoint: python3 /main.py
+    restart: on-failure
+    depends_on:
+      - rabbitmq
+    links: 
+      - rabbitmq
+    environment:
+      - PYTHONUNBUFFERED=1
+      - RECV_QUEUE=count_summary
+      - SEND_QUEUE=summary_resume

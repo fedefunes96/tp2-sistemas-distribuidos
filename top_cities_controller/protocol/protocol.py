@@ -11,10 +11,10 @@ TOP_CITIES = "TOP_CITIES"
 EOF = "EOF"
 
 class Protocol:
-    def __init__(self):
+    def __init__(self, recv_queue, send_queue):
         self.connection = Connection()
-        self.receiver = self.connection.create_direct_receiver("top_cities")
-        self.sender = self.connection.create_direct_sender("summary_resume")
+        self.receiver = self.connection.create_direct_receiver(recv_queue)
+        self.sender = self.connection.create_direct_sender(send_queue)
 
     def start_connection(self, callback):
         self.callback = callback
@@ -25,11 +25,12 @@ class Protocol:
             print("Received eoF")
             self.receiver.close()
         else:
-            [place, cases] = msg.split(",")
+            self.callback(json.loads(msg))
+            #[place, cases] = msg.split(",")
             
             #print(place)
 
-            self.callback(place, int(cases))
+            #self.callback(place, int(cases))
 
     def send_data(self, top_cities):
         self.sender.send(TOP_CITIES, json.dumps(top_cities))

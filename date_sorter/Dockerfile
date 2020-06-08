@@ -1,7 +1,6 @@
 FROM rabbitmq-python-base:0.0.1
 
-COPY date_redirector /
+COPY date_sorter /
 COPY common/middleware /middleware
-COPY common/redirector /redirector
 
 ENTRYPOINT ["/bin/sh"]

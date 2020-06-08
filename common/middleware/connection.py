@@ -16,6 +16,15 @@ class Connection:
                 pika.ConnectionParameters(host='rabbitmq')
             )
 
+    def reserve_queue_topic(self, topic, queue):
+        channel = self.connection.channel()
+
+        channel.exchange_declare(exchange=topic, exchange_type='fanout')
+
+        channel.queue_declare(queue=queue, durable=True)
+
+        channel.queue_bind(exchange=topic, queue=queue)
+
     def create_direct_sender(self, where):
         channel = self.connection.channel()
 
@@ -41,10 +50,10 @@ class Connection:
 
         return TopicSender(channel, where)   
             
-    def create_topic_receiver(self, from_where):
+    def create_topic_receiver(self, queue, from_where):
         channel = self.connection.channel()
 
-        return TopicReceiver(channel, from_where)
+        return TopicReceiver(channel, queue, from_where)
 
     def close(self):
         self.connection.close()
