@@ -28,6 +28,7 @@ class Protocol:
 
     def data_read(self, method, msg_type, msg):
         if msg_type == EOF:
+            print("RECEIVED EOF WORKER!!!!!!!!!!!!!!!!!!!")
             self.receiver.send_ack(method)
             self.receiver.close()
             self.send_master_ended()

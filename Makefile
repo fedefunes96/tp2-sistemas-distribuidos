@@ -16,7 +16,7 @@ docker-image:
 .PHONY: docker-image
 
 docker-compose-up: docker-image
-	docker-compose -f docker-compose-dev.yaml up -d --build
+	TOTAL_MAP_WORKERS=$(map_workers) docker-compose -f docker-compose-dev.yaml up --scale map_worker=$(map_workers) -d --build
 .PHONY: docker-compose-up
 
 docker-compose-down:

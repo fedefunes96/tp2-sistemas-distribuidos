@@ -29,7 +29,8 @@ class Protocol:
             
             #print(place)
 
-            self.callback(place, cases)
+            self.callback(place, int(cases))
 
     def send_data(self, top_cities):
         self.sender.send(TOP_CITIES, json.dumps(top_cities))
+        self.sender.send(EOF, '')

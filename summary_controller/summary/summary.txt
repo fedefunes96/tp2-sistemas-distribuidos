@@ -1,0 +1,1 @@
+{"Lombardia": 87086, "Piemonte": 30234, "Emilia-Romagna": 27564}

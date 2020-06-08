@@ -16,6 +16,6 @@ class Protocol:
     def data_read(self, msg_type, msg):
         if msg_type == "EOF":
             self.receiver.close()
-            print("Sending EOF to map workers")
+            print("Sending EOF to top cities")
             self.sender.send(EOF, '')
             self.connection.close()

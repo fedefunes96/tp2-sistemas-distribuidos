@@ -1,4 +1,5 @@
 from protocol.protocol import Protocol
+from collections import Counter
 
 class TopCitiesController:
     def __init__(self):
@@ -15,15 +16,10 @@ class TopCitiesController:
         self.cities_data[place] = cases
     
     def process_results(self):
-        top_cities = sorted(
-            self.cities_data,
-            key=self.cities_data.get,
-            reverse=True
-        )[:3]
+        print(self.cities_data)
 
-        for city in top_cities:
-            self.top_cities[city] = self.cities_data[city]
-        
+        self.top_cities = dict(Counter(self.cities_data).most_common(3))
+
         print("Top cities are")
         print(self.top_cities)
 

@@ -34,10 +34,10 @@ services:
       - PYTHONUNBUFFERED=1
       - RECV_QUEUE=chunks
       - SEND_QUEUE=map_city
-      - TOTAL_MAP_WORKERS=1
+      - TOTAL_MAP_WORKERS=${TOTAL_MAP_WORKERS}
 
-  map_worker1:  
-    container_name: map_worker
+  map_worker:  
+    #container_name: map_worker
     image: map_worker:latest
     entrypoint: python3 /main.py
     restart: on-failure
@@ -47,7 +47,6 @@ services:
       - rabbitmq
     environment:
       - PYTHONUNBUFFERED=1
-      - CONSUMER_ID=1
     volumes:
       - ./map_worker/data:/data
 
@@ -116,3 +115,5 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - RECV_QUEUE=summary_resume
+    volumes:
+      - ./summary_controller/summary:/summary

@@ -17,5 +17,7 @@ class Worker:
         self.positives_per_city[place] += 1
     
     def process_results(self):
+        print("Counted")
+        print(self.positives_per_city)
         for place in self.positives_per_city:
             self.protocol.send_data(place, self.positives_per_city[place])
