@@ -24,7 +24,6 @@ class Protocol:
 
     def data_read(self, msg_type, msg):
         if msg_type == EOF:
-            #Count and then close connection
             self.actual += 1
 
             if self.actual == self.expected:

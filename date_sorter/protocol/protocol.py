@@ -22,7 +22,6 @@ class Protocol:
 
     def data_read(self, msg_type, msg):
         if msg_type == EOF:
-            print("Received eoF")
             self.receiver.close()
         else:
             self.callback(json.loads(msg))

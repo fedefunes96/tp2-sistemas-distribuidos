@@ -23,9 +23,10 @@ def read_from_config_file():
 
     configParser = ConfigParser()
     configParser.read(CONFIG_FILE)
-            
-    #config_params["ip"] = int(configParser.get('SETTINGS', 'SERVER_IP'))
-    #config_params["port"] = int(configParser.get('SETTINGS', 'SERVER_PORT'))
+
+    config_params["queue_map"] = configParser.get('SETTINGS', 'QUEUE_MAP')
+    config_params["queue_date"] = configParser.get('SETTINGS', 'QUEUE_DATE')
+    config_params["queue_count"] = configParser.get('SETTINGS', 'QUEUE_COUNT')
 
     return config_params
 
@@ -46,8 +47,6 @@ def read_from_env():
 def main():
     config_params = parse_config_params()
     
-    #time.sleep(15)
-
     chunk_manager = ChunkManager(
         config_params["queue_map"],
         config_params["queue_date"],

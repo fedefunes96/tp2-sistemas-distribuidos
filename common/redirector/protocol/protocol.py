@@ -16,7 +16,7 @@ class Protocol:
 
         for queue in send_queues:
             self.senders[queue] = self.connection.create_direct_sender(queue)
-        #self.sender = self.connection.create_direct_sender(send_queue)
+
         self.master_sender = self.connection.create_direct_sender(master_send_queue)
 
     def start_connection(self, callback, callback_eof):
@@ -27,7 +27,6 @@ class Protocol:
     
     def send_data(self, data, where):
         self.senders[where].send(NORMAL, data)
-        #self.sender.send(NORMAL, data)
     
     def send_master_ended(self):
         self.master_sender.send(EOF, "")

@@ -16,4 +16,3 @@ class MapController(Redirector):
         place = self.apply_func(float(latitude), float(longitude))
 
         self.redirect_data(place, self.send_queues[0])
-        #Redirector.data_received(self, place)

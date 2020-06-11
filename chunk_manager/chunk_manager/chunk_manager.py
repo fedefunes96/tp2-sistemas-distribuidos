@@ -24,5 +24,4 @@ class ChunkManager:
                     line_count += 1
                     self.protocol.process(date, latitude, longitude, result)
 
-        print("Everything sent")
         self.protocol.close()

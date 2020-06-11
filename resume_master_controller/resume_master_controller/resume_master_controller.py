@@ -6,4 +6,3 @@ class ResumeMasterController:
 
     def start(self):
         self.protocol.start_connection()
-        print("Is this ever called?")

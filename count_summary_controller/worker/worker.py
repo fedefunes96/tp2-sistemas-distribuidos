@@ -18,6 +18,5 @@ class Worker:
     
     def process_results(self):
         result = self.total_deceduti / self.total_positivi
-        print(result)
 
         self.protocol.send_data(result)

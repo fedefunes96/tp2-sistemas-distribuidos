@@ -22,15 +22,9 @@ class Protocol:
 
     def data_read(self, msg_type, msg):
         if msg_type == EOF:
-            print("Received eoF")
             self.receiver.close()
         else:
             self.callback(json.loads(msg))
-            #[place, cases] = msg.split(",")
-            
-            #print(place)
-
-            #self.callback(place, int(cases))
 
     def send_data(self, top_cities):
         self.sender.send(TOP_CITIES, json.dumps(top_cities))

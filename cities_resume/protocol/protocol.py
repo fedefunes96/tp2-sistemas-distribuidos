@@ -21,15 +21,12 @@ class Protocol:
         self.receiver.start_receiving(self.data_read)
 
     def send_data(self, data):
-        #msg = place + "," + str(cases)
-
         self.sender.send(NORMAL, json.dumps(data))
 
         self.master_sender.send(EOF, "")
 
     def data_read(self, msg_type, msg):
         if msg_type == EOF:
-            print("Received eoF")
             self.receiver.close()
         else:
             self.callback(msg)

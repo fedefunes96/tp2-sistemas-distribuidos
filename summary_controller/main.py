@@ -23,8 +23,7 @@ def read_from_config_file():
     configParser = ConfigParser()
     configParser.read(CONFIG_FILE)
             
-    #config_params["ip"] = int(configParser.get('SETTINGS', 'SERVER_IP'))
-    #config_params["port"] = int(configParser.get('SETTINGS', 'SERVER_PORT'))
+    config_params["receive_queue"] = configParser.get('SETTINGS', 'RECV_QUEUE')
 
     return config_params
 
@@ -42,8 +41,6 @@ def read_from_env():
 
 def main():
     config_params = parse_config_params()
-
-    #time.sleep(15)
 
     master_controller = SummaryController(
         config_params["receive_queue"],

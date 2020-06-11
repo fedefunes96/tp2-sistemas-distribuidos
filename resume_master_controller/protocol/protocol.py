@@ -22,6 +22,5 @@ class Protocol:
 
             if self.pending_connections == 0:
                 self.receiver.close()
-                print("Sending EOF to {}".format(self.send_queue))
                 self.sender.send(EOF, '')
                 self.connection.close()

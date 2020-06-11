@@ -15,6 +15,4 @@ class DateSorter:
         self.date_data.update(sorted(data.items()))
     
     def process_results(self):
-        print(self.date_data)
-
         self.protocol.send_data(self.date_data)

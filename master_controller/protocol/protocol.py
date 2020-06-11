@@ -29,6 +29,5 @@ class Protocol:
             self.callback(msg)
         
     def send_eof(self):
-        print("Sending EOF to map workers")
         for i in range(0, self.total_workers):
             self.sender.send(EOF, '')
