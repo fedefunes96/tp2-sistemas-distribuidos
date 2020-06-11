@@ -34,7 +34,7 @@ def read_from_env():
 
     try:
         config_params["recv_queue"] = os.environ["RECV_QUEUE"]
-        config_params["send_queue"] = os.environ["SEND_QUEUE"]
+        config_params["send_queue"] = [os.environ["SEND_QUEUE"]]
         config_params["master_queue"] = os.environ["MASTER_SEND_QUEUE"]
     except KeyError as e:
         raise KeyError("Key was not found. Error: {}. Aborting server".format(e))

@@ -21,6 +21,7 @@ docker-image:
 .PHONY: docker-image
 
 docker-compose-up: docker-image
+	COMPOSE_PARALLEL_LIMIT=20 \
 	TOTAL_MAP_WORKERS=$(map_workers) \
 	TOTAL_DATE_WORKERS=$(date_workers) \
 	TOTAL_COUNT_WORKERS=$(count_workers) \
