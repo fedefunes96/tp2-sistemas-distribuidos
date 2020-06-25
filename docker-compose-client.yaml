@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 services:
   chunk_manager:
     container_name: chunk_manager
@@ -21,4 +21,5 @@ services:
 
 networks:
   test-network:
-    #external: true
+    external:
+      name: ${SERVER_NAME}-network
