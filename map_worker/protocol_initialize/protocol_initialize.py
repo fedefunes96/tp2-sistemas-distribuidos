@@ -4,9 +4,7 @@ import random
 import time
 
 from middleware.connection import Connection
-
-NORMAL = "NORMAL"
-EOF = "EOF"
+from communication.message_types import NORMAL, EOF
 
 class ProtocolInitialize:
     def __init__(self, recv_queue, callback):

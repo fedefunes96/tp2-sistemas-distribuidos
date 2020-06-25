@@ -1,7 +1,6 @@
 from middleware.connection import Connection
 
-NORMAL = "NORMAL"
-EOF = "EOF"
+from communication.message_types import NORMAL, EOF
 
 class Protocol:
     def __init__(self, recv_queue, send_queue, total_workers):
@@ -17,7 +16,7 @@ class Protocol:
         self.receiver.start_receiving(self.data_read)
 
     def data_read(self, msg_type, msg):
-        if msg_type == "EOF":
+        if msg_type == EOF:
             self.pending_connections -= 1
 
             if self.pending_connections == 0:

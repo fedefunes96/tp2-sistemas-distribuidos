@@ -5,9 +5,7 @@ import time
 import json
 
 from middleware.connection import Connection
-
-NORMAL = "NORMAL"
-EOF = "EOF"
+from communication.message_types import NORMAL, EOF
 
 class Protocol:
     def __init__(self, recv_queue, send_queue, master_queue):

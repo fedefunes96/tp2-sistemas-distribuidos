@@ -1,7 +1,7 @@
 from middleware.connection import Connection
 
-#NORMAL = "NORMAL"
-EOF = "EOF"
+from communication.message_types import EOF
+
 
 class Protocol:
     def __init__(self, recv_queue, send_queue, total_workers):

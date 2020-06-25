@@ -1,10 +1,7 @@
 from middleware.connection import Connection
 import json
 
-TOP_CITIES = "TOP_CITIES"
-DATE_RESULTS = "DATE_RESULTS"
-TOTAL_COUNT = "TOTAL_COUNT"
-EOF = "EOF"
+from communication.message_types import EOF, TOP_CITIES, DATE_RESULTS, TOTAL_COUNT
 
 class Protocol:
     def __init__(self, recv_queue):

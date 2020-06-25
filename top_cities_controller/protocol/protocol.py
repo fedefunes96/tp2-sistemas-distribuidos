@@ -6,9 +6,7 @@ import json
 
 from middleware.connection import Connection
 
-NORMAL = "NORMAL"
-TOP_CITIES = "TOP_CITIES"
-EOF = "EOF"
+from communication.message_types import NORMAL, EOF, TOP_CITIES
 
 class Protocol:
     def __init__(self, recv_queue, send_queue, total_workers):
