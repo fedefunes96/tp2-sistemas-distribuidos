@@ -11,8 +11,11 @@ TOP_CITIES = "TOP_CITIES"
 EOF = "EOF"
 
 class Protocol:
-    def __init__(self, recv_queue, send_queue):
+    def __init__(self, recv_queue, send_queue, total_workers):
         self.connection = Connection()
+        
+        self.pending_connections = total_workers
+
         self.receiver = self.connection.create_direct_receiver(recv_queue)
         self.sender = self.connection.create_direct_sender(send_queue)
 
@@ -22,7 +25,11 @@ class Protocol:
 
     def data_read(self, msg_type, msg):
         if msg_type == EOF:
-            self.receiver.close()
+            #self.receiver.close()
+            self.pending_connections -= 1
+
+            if self.pending_connections == 0:
+                self.receiver.close()         
         else:
             self.callback(json.loads(msg))
 

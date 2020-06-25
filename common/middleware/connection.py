@@ -50,10 +50,10 @@ class Connection:
 
         return TopicSender(channel, where)   
             
-    def create_topic_receiver(self, queue, from_where):
+    def create_topic_receiver(self, from_where):
         channel = self.connection.channel()
 
-        return TopicReceiver(channel, queue, from_where)
+        return TopicReceiver(channel, from_where)
 
     def close(self):
         self.connection.close()

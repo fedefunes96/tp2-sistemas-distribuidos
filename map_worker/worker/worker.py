@@ -2,30 +2,31 @@ import csv
 from map_controller.map_controller import MapController
 from named_point.named_point import NamedPoint
 from point.point import Point
+from protocol_initialize.protocol_initialize import ProtocolInitialize
 
 class Worker:
-    def __init__(self, recv_queue, send_queue, master_queue):
+    def __init__(self, recv_queue, send_queue, master_queue, recv_init_queue):
         self.map_controller = MapController(
             recv_queue,
             send_queue,
             master_queue,
             self.process_data
         )
+
+        self.initialize_protocol = ProtocolInitialize(
+            recv_init_queue,
+            self.process_places
+        )
+
         self.places = []
 
-    def start(self, route):
-        with open(route) as csv_file:
-            csv_reader = csv.reader(csv_file, delimiter=',')
-            line_count = 0
-            for row in csv_reader:
-                if line_count == 0:
-                    line_count += 1
-                    continue
-                else:
-                    point = NamedPoint(row[0], float(row[2]), float(row[1]))
-                    self.places.append(point)
-                    line_count += 1
+    def process_places(self, region, latitude, longitude):
+        point = NamedPoint(region, longitude, latitude)
+        self.places.append(point)
 
+    def start(self):
+        self.initialize_protocol.start_connection()
+        print("All places received")
         self.map_controller.start()
 
     def process_data(self, latitude, longitude):

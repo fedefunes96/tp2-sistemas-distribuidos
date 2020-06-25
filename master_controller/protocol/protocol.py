@@ -1,6 +1,6 @@
 from middleware.connection import Connection
 
-NORMAL = "NORMAL"
+#NORMAL = "NORMAL"
 EOF = "EOF"
 
 class Protocol:
@@ -12,21 +12,24 @@ class Protocol:
         self.receiver = self.connection.create_direct_receiver(recv_queue)
         self.sender = self.connection.create_distributed_work_sender(send_queue)
 
-    def start_connection(self, callback):
-        self.callback = callback
+    def start_connection(self):#, callback):
+        #self.callback = callback
 
         self.receiver.start_receiving(self.data_read)
     
-    def send_data(self, data):
-        self.sender.send(NORMAL, data)
+    #def send_data(self, data):
+    #    self.sender.send(NORMAL, data)
 
     def data_read(self, msg_type, msg):
-        if msg_type == "EOF":
+        self.receiver.close()
+        self.send_eof()
+        self.connection.close()        
+        '''if msg_type == "EOF":
             self.receiver.close()
             self.send_eof()
             self.connection.close()
         else:            
-            self.callback(msg)
+            self.callback(msg)'''
         
     def send_eof(self):
         for i in range(0, self.total_workers):

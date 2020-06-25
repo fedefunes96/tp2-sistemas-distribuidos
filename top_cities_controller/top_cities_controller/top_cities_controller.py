@@ -2,8 +2,8 @@ from protocol.protocol import Protocol
 from collections import Counter
 
 class TopCitiesController:
-    def __init__(self, recv_queue, send_queue):
-        self.protocol = Protocol(recv_queue, send_queue)
+    def __init__(self, recv_queue, send_queue, total_workers):
+        self.protocol = Protocol(recv_queue, send_queue, total_workers)
         self.cities_data = {}
         self.top_cities = {}
 
